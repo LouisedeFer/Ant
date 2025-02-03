@@ -46,7 +46,16 @@ class Tile:
         """Change the text of the tile."""
         self._text=text
 
+    def __eq__(self, other : object) -> bool :
+        """Test if two tiles are equal."""
+
+        if isinstance(other, Tile) :
+            return self.text==other.text and self.color==other.color
+
+        return False 
+
     def draw(self, screen: pygame.Surface, size: int, row : int, col : int) -> None:
         """Draw the tile on screen."""
         rect = pygame.Rect(col * size, row * size, size, size)
         pygame.draw.rect(screen, self.color, rect)
+

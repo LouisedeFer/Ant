@@ -1,6 +1,9 @@
 #First party
 
-import pygame
+# Third party
+import importlib.resources
+
+import pygame  # type: ignore
 
 from .board import Board
 from .dir import Dir
@@ -16,6 +19,7 @@ class Ant :
         self._row=row
         self._column=column
         self._dir=direction
+        self._font= None | pygame.font.Font
 
     @property
     def dir(self) -> Dir :
@@ -82,17 +86,26 @@ class Ant :
     def move_and_change_color(self, board : Board) -> None :
         """Movement of the ant and changement of the colors of the tiles."""
         self.change_direction(board.dictionary)
-        board.change_color(self.row, self.column)
+        board.change_color(self.row, self.column)#change the color of the tile the ant is
         self.column +=self.dir.x
         self.row+=self.dir.y
-        #test if the new tile exists :
-        if self.row in board.dictionary.keys and 0 <= self.column < len(board.dictionary[self.row]) :
+        #test if the new tile exists (the contains operator has been redifined, test if an integer is a key):
+        if self.row in board.dictionary and 0 <= self.column < len(board.dictionary[self.row]) :
             #if yes, simply change the color
             board.change_color(self.row, self.column)
         else :
             #if no, create a new tile and adapt the dictionary
             board.add_tile(self.row, self.column)
-            board.change_color(self.row, self._column)
+            board.change_color(self.row, self.column)
+
+    def draw_ant(self, screen: pygame.Surface, size: int) -> None:
+        """Draw the ant on screen."""
+        if self._font is None :
+            with importlib.resources.path("project", "Police.ttf") as f:
+                self._font=pygame.font.Font(f, 32)
+        text = self._font.render("ant", True, pygame.Color("red")) 
+        x, y = self.column*size + size/3, self.row*size + size/3 # Define the position where to write the ant.
+        screen.blit(text, (x, y))
 
 
 
