@@ -58,12 +58,11 @@ class Board :
                 #make sure the first column is always 0
                 for key in self.dictionary :
                     self.dictionary[key].insert(0, Tile(" ",WHITE))
-        elif row <0 :
+        elif row < 0 :
             #make sure the first row is always 0
-            length_dic=len(self.dictionary)
-            length_list=len(self.dictionary[0])
-            for key in range(length_dic, -1):
-                self.dictionary[key+1] = self.dictionary[key]
+            length_dic, length_list=len(self.dictionary),len(self.dictionary[0])
+            for key in range(length_dic,0, -1):
+                self.dictionary[key] = self.dictionary[key-1]
             self.dictionary[0]=[Tile(" ",WHITE) for i in range(length_list)]
             # add a line with white tiles
         else :
