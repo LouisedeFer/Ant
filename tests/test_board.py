@@ -23,10 +23,11 @@ def test_board_change_color() -> None :
 def test_board_add_tile() -> None :
     """Test if the tiles are added properly."""
     dic_init={0 : [project.Tile(" ",WHITE)], 1 : [project.Tile("X",BLACK)]}
-    board_0=project.board.Board(dic_init)
     dic_1={0 : [project.Tile(" ",WHITE),project.Tile(" ",WHITE)], 1 : [project.Tile("X",BLACK), project.Tile(" ",WHITE)]}
     dic_2={0 : [project.Tile(" ",WHITE), project.Tile(" ",WHITE),project.Tile(" ",WHITE)], 1 : [project.Tile(" ",WHITE), project.Tile("X",BLACK), project.Tile(" ",WHITE)]}
-    dict_3={0: [project.Tile(" ",WHITE), project.Tile(" ",WHITE)], 1 : [project.Tile("X",BLACK), project.Tile(" ",WHITE)], 2 : [project.Tile(" ",WHITE), project.Tile(" ",WHITE)]}
+    dict_3={0: [project.Tile(" ",WHITE)], 1 : [project.Tile(" ",WHITE)], 2 : [project.Tile("X",BLACK)]}
+
+    board_0=project.board.Board(dic_init)
     board_0.add_tile(0,1)
     assert board_0.dictionary==dic_1
     board_0.add_tile(0,-1)
@@ -34,6 +35,7 @@ def test_board_add_tile() -> None :
     """board_0=project.board.Board(dic_init)
     board_0.add_tile(2,0)
     assert board_0.dictionary==dict_3"""
+    dic_init={0 : [project.Tile(" ",WHITE)], 1 : [project.Tile("X",BLACK)]}
     board_0=project.board.Board(dic_init)
     board_0.add_tile(-1,0)
     assert board_0.dictionary==dict_3
