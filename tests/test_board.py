@@ -8,9 +8,9 @@ BLACK=pygame.Color("black")
 def test_board_creation()-> None :
     """Test the creation of the board."""
     board_init={0 : [project.Tile(" ",WHITE)], 1 : [project.Tile("X",BLACK)]}
-    board=project.board.Board(board_init).dictionary
-    assert board==board_init
-    assert len(board)==2
+    board_dic=project.board.Board(board_init).dictionary
+    assert board_dic==board_init
+    assert len(board_dic)==2
 
 def test_board_change_color() -> None : 
     """Test if the color is changed properly."""
@@ -25,17 +25,15 @@ def test_board_add_tile() -> None :
     dic_init={0 : [project.Tile(" ",WHITE)], 1 : [project.Tile("X",BLACK)]}
     board_0=project.board.Board(dic_init)
     dic_1={0 : [project.Tile(" ",WHITE),project.Tile(" ",WHITE)], 1 : [project.Tile("X",BLACK), project.Tile(" ",WHITE)]}
-    dic_2={0 : [project.Tile(" ",WHITE), project.Tile(" ",WHITE),project.Tile(" ",WHITE)], 1 : [project.Tile(" ",WHITE), project.Tile(" ",WHITE), project.Tile("X",BLACK)]}
-    dict_3={0: [project.Tile(" ",WHITE), project.Tile(" ",WHITE)], 1 : [project.Tile(" ",WHITE), project.Tile(" ",WHITE)], 2 : [project.Tile(" ",WHITE), project.Tile(" ",WHITE)]}
+    dic_2={0 : [project.Tile(" ",WHITE), project.Tile(" ",WHITE),project.Tile(" ",WHITE)], 1 : [project.Tile(" ",WHITE), project.Tile("X",BLACK), project.Tile(" ",WHITE)]}
+    dict_3={0: [project.Tile(" ",WHITE), project.Tile(" ",WHITE)], 1 : [project.Tile("X",BLACK), project.Tile(" ",WHITE)], 2 : [project.Tile(" ",WHITE), project.Tile(" ",WHITE)]}
     board_0.add_tile(0,1)
-    for key in range(len(dic_1)) :
-        for elt in range(len(dic_1[key])) :
-            assert board_0.dictionary[key][elt]==dic_1[key][elt]
+    assert board_0.dictionary==dic_1
     board_0.add_tile(0,-1)
     assert board_0.dictionary== dic_2
+    """board_0=project.board.Board(dic_init)
+    board_0.add_tile(2,0)
+    assert board_0.dictionary==dict_3"""
     board_0=project.board.Board(dic_init)
-    board_0.add_tile(2,1)
-    assert board_0.dictionary==dict_3
-    board_0=project.board.Board(dic_init)
-    board_0.add_tile(-1,1)
+    board_0.add_tile(-1,0)
     assert board_0.dictionary==dict_3

@@ -30,6 +30,12 @@ class Board :
     def dictionary(self, dictionary : dict[int, list[Tile]]) -> None :
         self._dictionary=dictionary
 
+    def __contains__(self, other: object) -> bool:
+        """Check if an integer is a key of the dictionary."""
+        if not isinstance(other, int):
+            return False
+        return other in self.dictionary
+
 
     def change_color(self, row : int , column : int) -> None :
         """Change the color of the tile when the ant moves."""
@@ -45,21 +51,24 @@ class Board :
         if 0<= row < len(self.dictionary) :
             #just add a column
             if column ==len(self.dictionary[row]) :
-                for key in range(len(self.dictionary)) :
-                    self.dictionary[key].append(Tile(" ", WHITE ))
+                for key in self.dictionary:
+                    self.dictionary[key].append(Tile(" ",WHITE ))
                     #change the indexation properly and add the columns to the dict
             else :
                 #make sure the first column is always 0
-                for key in range(len(self.dictionary)) :
-                    self.dictionary[key].insert(0, Tile(" ", WHITE))
+                for key in self.dictionary :
+                    self.dictionary[key].insert(0, Tile(" ",WHITE))
         elif row <0 :
             #make sure the first row is always 0
-            for key in range (len(self.dictionary)) :
+            length_dic=len(self.dictionary)
+            length_list=len(self.dictionary[0])
+            for key in range(length_dic, -1):
                 self.dictionary[key+1] = self.dictionary[key]
-            self.dictionary[0]=[Tile(" ", WHITE) for i in range(len(self.dictionary[1]))]
+            self.dictionary[0]=[Tile(" ",WHITE) for i in range(length_list)]
             # add a line with white tiles
         else :
-            self.dictionary[row] = [Tile(" ", WHITE) for i in range(len(self.dictionary[1]))]
+            length_list=len(self.dictionary[0])
+            self.dictionary[row] = [Tile(" ",WHITE) for i in range(length_list)]
 
 
 
