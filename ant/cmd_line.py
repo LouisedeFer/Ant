@@ -4,7 +4,6 @@ import logging
 import sys
 
 #import colorlog
-
 #Third party
 import pygame
 
@@ -12,6 +11,18 @@ import pygame
 DEFAULT_NUMBER_STEPS=10
 MIN_NUMBER_STEPS=5
 MAX_NUMBER_STEPS=150
+
+DEFAULT_TILE_SIZE=20
+MIN_TILE_SIZE=10
+MAX_TILE_SIZE=50
+
+WHITE=pygame.Color("white")
+BLACK=pygame.Color("black")
+RED=pygame.Color("red")
+
+DEFAULT_FPS=5
+
+
 
 
 """
@@ -46,13 +57,22 @@ def read_args() -> argparse.Namespace:
 
     args = parser.parse_args()
     #Movement
-    parser.add_argument("--steps", "-N", type = int,
+    parser.add_argument("--steps", "-s", type = int,
                         default = DEFAULT_NUMBER_STEPS,
                         help=f"Number of steps to run. Must be between"
                         f" {MIN_NUMBER_STEPS} and {MAX_NUMBER_STEPS}.")
     #Way of playing
     parser.add_argument("--play", "-p", action="store_true", help="Enable play mode with interface.")
 
+    #If no GUI interface 
+    parser.add_argument("--final", "-f", default="final_state.yml", help="The path where the final state of the ant is stored.")
+    #If GUI interface 
+    parser.add_argument("--size", "-si", type=int, 
+                        default = DEFAULT_TILE_SIZE, 
+                        help = f"The default size of a tile. Must be between {MIN_TILE_SIZE} and {MAX_TILE_SIZE}")
+
+    parser.add_argument("--color-ant", "-c", default= RED, help="The color of the ant. Must be a pygame.Color. ")
+    parser.add_argument("--frame-per-second", "-fps", default=DEFAULT_FPS, help = "The number of frame per second.")
     #Logging
     parser.add_argument("--verbose", "-v", dest="verbose", action="count", default=0, help="Verbose level. -v for information, -vv for debug, -vvv for trace.")
 

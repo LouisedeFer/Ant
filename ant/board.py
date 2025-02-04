@@ -50,6 +50,10 @@ class Board :
         """Add a tile and adapt the dictionary."""
         self.dictionary[(row, column)]=Tile(" ", WHITE)
 
+    def draw(self, screen : pygame.Surface, size : int) -> None :
+        for coord, tile in self.dictionary.items() :
+            tile.draw(screen, size, coord[0], coord[1])
+
 
 
 
