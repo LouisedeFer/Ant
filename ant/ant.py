@@ -4,12 +4,15 @@
 import importlib.resources
 
 import pygame  # type: ignore
+import math
 
 from .board import Board
 from .dir import Dir
 from .tile import Tile
 
 #Constants
+MIN_COL=11
+MIN_ROW=11
 
 class Ant :
     """The ant."""
@@ -20,6 +23,7 @@ class Ant :
         self._column=column
         self._dir=direction
         self._font= None | pygame.font.Font
+        self._coordinates=(-MIN_COL//2, -MIN_ROW//2)
 
     @property
     def dir(self) -> Dir :
@@ -50,6 +54,12 @@ class Ant :
     def column(self, column: int) -> None :
         """Change the column of the ant."""
         self._column=column
+
+    @property
+    def coordonates(self) -> tuple[int, int] :
+        """Left Up Coordonates of the board printed."""
+        return self._coordinates
+
 
     def turn_right(self) -> None :
         """Turn right."""
@@ -94,14 +104,14 @@ class Ant :
             board.add_tile(self.row, self.column)
 
 
-    def draw_ant(self, screen: pygame.Surface, size: int) -> None:
+    def draw_ant(self, screen : pygame.Surface, size : int, min_r : int, min_c : int) -> None:
         """Draw the ant on screen."""
-        if self._font is None :
-            with importlib.resources.path("project", "Police.ttf") as f:
-                self._font=pygame.font.Font(f, 32)
-        text = self._font.render("ant", True, pygame.Color("red")) 
-        x, y = self.column*size + size/3, self.row*size + size/3 # Define the position where to write the ant.
-        screen.blit(text, (x, y))
+        ant=pygame.image.load("ant.png")
+        ant=pygame.transform.scale(ant,(size-2, size-2) )
+        ant_pivoted=pygame.transform.rotate(ant,self.dir.angle())
+        screen.blit(ant_pivoted, ((self._column-min_c)*size, (self._row-min_r)*size))
+
+
 
 
 

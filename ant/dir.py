@@ -1,5 +1,6 @@
 # Standard
 import enum
+import math
 
 class Dir(enum.Enum):
     """Direction of movement."""
@@ -28,4 +29,14 @@ class Dir(enum.Enum):
         if self==Dir.LEFT :
             return "LEFT"
         return "RIGHT"
+
+    def angle(self) -> float :
+        """Return the angle for the rotation of the ant."""
+        if self==Dir.UP :
+            return 0
+        if self==Dir.DOWN :
+            return 180
+        if self==Dir.LEFT :
+            return 90
+        return 270
 
