@@ -12,9 +12,9 @@ DEFAULT_NUMBER_STEPS=10
 MIN_NUMBER_STEPS=5
 MAX_NUMBER_STEPS=150
 
-DEFAULT_TILE_SIZE=20
-MIN_TILE_SIZE=10
-MAX_TILE_SIZE=50
+DEFAULT_TILE_SIZE=50
+MIN_TILE_SIZE=30
+MAX_TILE_SIZE=100
 
 WHITE=pygame.Color("white")
 BLACK=pygame.Color("black")
@@ -55,14 +55,14 @@ def read_args() -> argparse.Namespace:
             description = "Langton's Ant.",
             formatter_class = argparse.ArgumentDefaultsHelpFormatter)
 
-    args = parser.parse_args()
+
     #Movement
     parser.add_argument("--steps", "-s", type = int,
                         default = DEFAULT_NUMBER_STEPS,
                         help=f"Number of steps to run. Must be between"
                         f" {MIN_NUMBER_STEPS} and {MAX_NUMBER_STEPS}.")
     #Way of playing
-    parser.add_argument("--play", "-p", action="store_true", help="Enable play mode with interface.")
+    parser.add_argument("--play", "-p", action="store_true", default =False, help="Enable play mode with interface.")
 
     #If no GUI interface 
     parser.add_argument("--final", "-f", default="final_state.yml", help="The path where the final state of the ant is stored.")
@@ -75,6 +75,8 @@ def read_args() -> argparse.Namespace:
     parser.add_argument("--frame-per-second", "-fps", default=DEFAULT_FPS, help = "The number of frame per second.")
     #Logging
     parser.add_argument("--verbose", "-v", dest="verbose", action="count", default=0, help="Verbose level. -v for information, -vv for debug, -vvv for trace.")
+
+    args = parser.parse_args()
 
     return args
 
