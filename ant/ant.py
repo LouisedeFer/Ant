@@ -105,7 +105,6 @@ class Ant :
         #test if the new tile exists (the contains operator has been redifined, test if a tuple of integer is a key):
         if (self.row, self.column) not in board.dictionary :
             board.add_tile(self.row, self.column)
-            logger.info("add new tile")
         (min_r, min_c), (max_r, max_c) = board.top_corner, board.bottom_corner
         if self.row < min_r or self.row > max_r or self.column < min_c or self.column > max_c: # the ant goes out of the window
             #Update the board

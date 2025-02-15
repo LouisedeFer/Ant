@@ -1,4 +1,3 @@
-
 class AntError(Exception):  # noqa: D100
     """Exception super-class for all Ant errors."""
 

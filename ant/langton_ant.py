@@ -1,11 +1,13 @@
-from ant.tile import Tile
-import pygame
-from .ant import Ant
-from .board import Board
-
-import yaml
+import logging  # noqa: D100
 from pathlib import Path
 
+import pygame
+import yaml
+
+from ant.tile import Tile
+
+from .ant import Ant
+from .board import Board
 
 #GLOBAL CONSTANTS
 MIN_COL_PLAY=11
@@ -19,6 +21,9 @@ SCREEN_SIZE_INIT=(MIN_ROW_PLAY*TILE_SIZE, MIN_COL_PLAY*TILE_SIZE)
 
 WHITE=pygame.Color("white")
 RED= pygame.Color("red")
+
+logger = logging.getLogger("foo")
+
 
 class LangtonAnt :
     """The class in which you decide wether you play with an interface or not."""
@@ -57,7 +62,7 @@ class LangtonAnt :
         return (ant.row, ant.column, ant.dir.texte(), board.dictionary)
 
     def save_final(self, step : int, coord : tuple[int, int], 
-                   dir : str, dict :dict[tuple[int, int], Tile], final_state : Path ) -> list[str] :
+                   dir : str, dict :dict[tuple[int, int], Tile], final_state : Path ) -> list[str] :  # noqa: A002
         """Save the file with final state."""
         file=[]
 
@@ -81,6 +86,7 @@ class LangtonAnt :
 
         with final_state.open("w+") as fd : #(file descriptor), create a file if it doesn't exist
             yaml.safe_dump(file,fd)
+            logger.info("save the file of the final state")
 
         return file
 
@@ -102,7 +108,6 @@ class LangtonAnt :
 
     def ant_play(self, ant : Ant, board : Board, step : int) -> None :
         """The ant with the pygame interface."""
-        #ScrollBar=pygame_menu.widgets.ScrollBar
         pygame.init()
         screen=pygame.display.set_mode(self._screen_size)
         pygame.display.set_caption(f"Langton's ant with {step} steps.")

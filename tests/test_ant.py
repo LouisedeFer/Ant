@@ -1,6 +1,5 @@
-import pygame
-
 import ant
+import pygame
 
 
 def test_ant_creation() -> None :
@@ -11,6 +10,16 @@ def test_ant_creation() -> None :
 
 def test_direction_ant() -> None : 
     """Test if the ant change its direction properly."""
+    ant_0=ant.Ant(0,0, ant.Dir.UP)
+    dicti={(0,0): ant.Tile(" ",pygame.Color("white"))}
+    ant_0.change_direction(dicti)
+    assert ant_0.dir==ant.Dir.RIGHT
+    ant_0=ant.Ant(0,0, ant.Dir.UP)
+    dicti={(0,0): ant.Tile("X",pygame.Color("red"))}
+    ant_0.change_direction(dicti)
+    assert ant_0.dir==ant.Dir.LEFT
+
+
 
 def test_turn_right() -> None : 
     """Test if turning right is well done."""

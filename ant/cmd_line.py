@@ -1,15 +1,12 @@
 #Standard  # noqa: D100, ERA001
 import argparse
 import logging
-import re
 import sys
 
 #import colorlog
-#Third party
 import pygame
 
-# First party
-from .exceptions import IntRangeError  # type: ignore
+#from .exceptions import IntRangeError  # type: ignore
 
 #Global constants
 DEFAULT_NUMBER_STEPS=10
@@ -72,8 +69,8 @@ def read_args() -> argparse.Namespace:
     #If no GUI interface
     parser.add_argument("--final", "-f", default="final_state.yml", help="The path where the final state of the ant is stored.")
     #If GUI interface
-    parser.add_argument("--size", "-si", type=int, 
-                        default = DEFAULT_TILE_SIZE, 
+    parser.add_argument("--size", "-si", type=int,
+                        default = DEFAULT_TILE_SIZE,
                         help = f"The default size of a tile. Must be between {MIN_TILE_SIZE} and {MAX_TILE_SIZE}")
 
     parser.add_argument("--frame-per-second", "-fps", default=DEFAULT_FPS, help = "The number of frame per second.")
@@ -82,7 +79,7 @@ def read_args() -> argparse.Namespace:
 
     # Parse
     args = parser.parse_args()
-
+    """
     # Check integer range
     for chk in [{"lbl": "Tile size", "val": args.size,
                  "min": MIN_TILE_SIZE, "max": MAX_TILE_SIZE},
@@ -91,10 +88,10 @@ def read_args() -> argparse.Namespace:
                 {"lbl": "Number of steps", "val": args.steps,
                  "min": MIN_NUMBER_STEPS, "max": MAX_NUMBER_STEPS},
                 ]:
-        #if not (chk["min"] <= chk["val"] <= chk["max"]):
+        if not (chk["min"] <= chk["val"] <= chk["max"]):
             logger.debug("Unproper values")
             raise IntRangeError(chk["lbl"], chk["val"], chk["min"], chk["max"])
-
+    """
 
     if args.verbose == 1:
         logger.setLevel(logging.INFO)
@@ -102,10 +99,6 @@ def read_args() -> argparse.Namespace:
         logger.setLevel(logging.DEBUG)
 
     return args
-
-
-
-        
 
 
 

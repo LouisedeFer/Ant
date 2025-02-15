@@ -1,14 +1,8 @@
-from __future__ import annotations  # noqa: D100
+import logging  # noqa: D100
 
-import logging
-from typing import TYPE_CHECKING
-
-import pygame  # type: ignore
+import pygame
 
 from .tile import Tile
-
-if TYPE_CHECKING:
-    from .ant import Ant
 
 # Constants
 
@@ -52,7 +46,7 @@ class Board :
     def update_global_coordinates(self)-> None:
         """Update the global coordinates."""
         (min_r, min_c), (max_r, max_c) = (self.top_corner, self.bottom_corner)
-        (mr, mc), (Mr, Mc) = self.global_coordinates
+        (mr, mc), (Mr, Mc) = self.global_coordinates  # noqa: N806
         self._global_coordinates = (min(mr, min_r), min(mc, min_c)), (max(max_r, Mr), max(Mc, max_c))
         logger.info("Update the global coordinates")
 
