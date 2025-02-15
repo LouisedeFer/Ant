@@ -1,11 +1,6 @@
-
-# Third party
-import logging
+import logging  # noqa: D100
 
 import pygame
-
-# First party
-from .dir import Dir
 
 logger = logging.getLogger("foo")
 
@@ -50,7 +45,7 @@ class Tile:
         """Test if two tiles are equal."""
         if isinstance(other, Tile) :
             return self.text==other.text and self.color==other.color
-
+        logger.debug("not equal")
         return False
 
     def draw(self, screen: pygame.Surface, size: int, row : int, col : int) -> None:

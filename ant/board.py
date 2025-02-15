@@ -1,13 +1,9 @@
-from __future__ import annotations  # noqa: D100
+from __future__ import annotations
+import logging  # noqa: D100
 
-from typing import TYPE_CHECKING
-
-import pygame  # type: ignore
+import pygame
 
 from .tile import Tile
-
-if TYPE_CHECKING:
-    from .ant import Ant
 
 # Constants
 
@@ -16,6 +12,9 @@ RED = pygame.Color("red")
 
 MIN_COL=11
 MIN_ROW=11
+
+logger = logging.getLogger("foo")
+
 
 class Board :
     """The board."""
@@ -27,10 +26,9 @@ class Board :
     def __init__(self, dictionary : dict[tuple[int,int], Tile]) -> None :
         """Board initialization."""
         self._dictionary=dictionary
-        self._min_r=-MIN_ROW//2
-        self._min_c=-MIN_COL//2
-        self._max_r=MIN_ROW//2
-        self._max_c=MIN_COL//2
+        self._global_coordinates=(-MIN_ROW//2, -MIN_COL//2), (MIN_ROW//2, MIN_COL//2)
+        self._top_corner = (-MIN_ROW//2, -MIN_COL//2)
+        self._bottom_corner = (MIN_ROW//2, MIN_COL//2)
 
     @property
     def dictionary(self) -> dict[tuple[int,int], Tile] :
@@ -42,29 +40,37 @@ class Board :
         self._dictionary=dictionary
 
     @property
-    def min_r(self) -> int :
-        """Minimal row."""
-        return self._min_r
+    def global_coordinates(self) -> tuple[tuple[int, int], tuple[int, int]] :
+        """The global coordinates."""
+        return self._global_coordinates
+
+    def update_global_coordinates(self)-> None:
+        """Update the global coordinates."""
+        (min_r, min_c), (max_r, max_c) = (self.top_corner, self.bottom_corner)
+        (mr, mc), (Mr, Mc) = self.global_coordinates  # noqa: N806
+        self._global_coordinates = (min(mr, min_r), min(mc, min_c)), (max(max_r, Mr), max(Mc, max_c))
+        logger.info("Update the global coordinates")
 
     @property
-    def min_c(self) -> int :
-        """Minimal column."""
-        return self._min_c
+    def top_corner(self) -> tuple[int, int] :
+        """Coordinates of the top corner."""
+        return self._top_corner
+
+    @top_corner.setter
+    def top_corner(self, corner : tuple[int, int]) -> None :
+        self._top_corner = corner
 
     @property
-    def max_c(self) -> int :
-        """Maximal column."""
-        return self._max_c
+    def bottom_corner(self) -> tuple[int, int ] :
+        """Coordinates of the bottom corner."""
+        return self._bottom_corner
 
-    @property
-    def max_r(self) -> int :
-        """Maximal row."""
-        return self._max_r
+    @bottom_corner.setter
+    def bottom_corner(self, corner : tuple[int, int ]) -> None :
+        self._bottom_corner = corner
 
-    def __contains__(self, coord: object) -> bool:
+    def __contains__(self, coord: tuple[int,int]) -> bool:
         """Check if an integer is a key of the dictionary."""
-        #if not isinstance(coord, tuple[int,int]):
-            #return False
         return coord in self.dictionary
 
 
@@ -89,6 +95,7 @@ class Board :
             for c in range(max_c-min_c+1) :
                 white_tile.draw(screen, size, r,c )
 
+        #draw the tiles of the dictionary
         for coord, tile in self.dictionary.items() :
             tile.draw(screen, size, coord[0]-min_r, coord[1]-min_c)
 
@@ -99,6 +106,43 @@ class Board :
             pygame.draw.line(screen, RED, (c*size,0), (c*size, (max_r-min_r+1)*size))
 
 
+
+    def move_up(self)->None :
+        """Move the window up."""
+        (x_top_left,_), (_,_)=self.global_coordinates
+        (x,y)=self.top_corner
+        (a,b)=self.bottom_corner
+        if x>x_top_left : #test is the user doesn't go too far
+            self.top_corner=(x-1,y)
+            self.bottom_corner=(a-1,b)
+
+    def move_down(self)->None :
+        """Move the window down."""
+        (_,_), (x_bottom_right,_)=self.global_coordinates
+        (x,y)=self.top_corner
+        (a,b)=self.bottom_corner
+        if a<x_bottom_right :
+            self.top_corner=(x+1,y)
+            self.bottom_corner=(a+1,b)
+
+
+    def move_left(self)->None :
+        """Move the window left."""
+        (_,y_top_left), (_,_)=self.global_coordinates
+        (x,y)=self.top_corner
+        (a,b)=self.bottom_corner
+        if y>y_top_left :
+            self.top_corner=(x,y-1)
+            self.bottom_corner=(a,b-1)
+
+    def move_right(self)->None :
+        """Move the window right."""
+        (_,_), (_,y_bottom_right)=self.global_coordinates
+        (x,y)=self.top_corner
+        (a,b)=self.bottom_corner
+        if b<y_bottom_right:
+            self.top_corner=(x,y+1)
+            self.bottom_corner=(a,b+1)
 
 
 
