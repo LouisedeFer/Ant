@@ -5,10 +5,13 @@ import importlib.resources
 
 import pygame  # type: ignore
 import math
+import logging
 
 from .board import Board
 from .dir import Dir
 from .tile import Tile
+
+logger = logging.getLogger("foo")
 
 #Constants
 MIN_COL=11
@@ -99,9 +102,16 @@ class Ant :
         board.change_color(self.row, self.column)#change the color of the tile where the ant is
         self.column +=self.dir.x
         self.row+=self.dir.y
-        #test if the new tile exists (the contains operator has been redifined, test if an integer is a key):
+        #test if the new tile exists (the contains operator has been redifined, test if a tuple of integer is a key):
         if (self.row, self.column) not in board.dictionary :
             board.add_tile(self.row, self.column)
+            logger.info("add new tile")
+        (min_r, min_c), (max_r, max_c) = board.top_corner, board.bottom_corner
+        if self.row < min_r or self.row > max_r or self.column < min_c or self.column > max_c: # the ant goes out of the window
+            #Update the board
+            board.top_corner = (self.row - MIN_ROW//2, self.column - MIN_COL//2)
+            board.bottom_corner = (self.row + MIN_ROW//2, self.column + MIN_COL//2)
+            board.update_global_coordinates()
 
 
     def draw_ant(self, screen : pygame.Surface, size : int, min_r : int, min_c : int) -> None:

@@ -98,13 +98,14 @@ class LangtonAnt :
 
     def coord_pygame(self, board : Board) -> tuple[tuple[int, int],tuple[int, int]] :
         """Coordonates of the board."""
-        return ((board.min_r, board.min_c), (board.max_r, board.max_c))
+        return (board.top_corner, board.bottom_corner)
 
     def ant_play(self, ant : Ant, board : Board, step : int) -> None :
         """The ant with the pygame interface."""
         #ScrollBar=pygame_menu.widgets.ScrollBar
         pygame.init()
         screen=pygame.display.set_mode(self._screen_size)
+        pygame.display.set_caption(f"Langton's ant with {step} steps.")
 
         clock = pygame.time.Clock()
         for _loop in range(step):
