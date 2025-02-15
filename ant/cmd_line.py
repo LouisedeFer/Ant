@@ -3,10 +3,10 @@ import argparse
 import logging
 import sys
 
-#import colorlog
+import colorlog
 import pygame
 
-#from .exceptions import IntRangeError  # type: ignore
+from .exceptions import IntRangeError  # type: ignore
 
 #Global constants
 DEFAULT_NUMBER_STEPS=10
@@ -21,7 +21,7 @@ WHITE=pygame.Color("white")
 BLACK=pygame.Color("black")
 RED=pygame.Color("red")
 
-DEFAULT_FPS=5
+DEFAULT_FPS=10
 MIN_FPS=5
 MAX_FPS=300
 
@@ -34,7 +34,7 @@ logger = logging.getLogger("foo")
 handler = logging.StreamHandler(sys.stderr)
 logger.addHandler(handler) # Registration of the new handler
 logger.setLevel(logging.INFO)
-"""
+
 color_fmt = colorlog.ColoredFormatter(
     "%(log_color)s[%(asctime)s][%(levelname)s] %(message)s",
     log_colors={
@@ -48,7 +48,7 @@ color_fmt = colorlog.ColoredFormatter(
 color_handler = colorlog.StreamHandler()
 color_handler.setFormatter(color_fmt)
 logger.addHandler(color_handler)
-"""
+
 
 def read_args() -> argparse.Namespace:
     """Read command line arguments."""
@@ -79,11 +79,12 @@ def read_args() -> argparse.Namespace:
 
     # Parse
     args = parser.parse_args()
-    """
+
+
     # Check integer range
     for chk in [{"lbl": "Tile size", "val": args.size,
                  "min": MIN_TILE_SIZE, "max": MAX_TILE_SIZE},
-                {"lbl": "Frame per second", "val": args.fps,
+                {"lbl": "Frame per second", "val": int(args.frame_per_second),
                  "min": MIN_FPS, "max": MAX_FPS},
                 {"lbl": "Number of steps", "val": args.steps,
                  "min": MIN_NUMBER_STEPS, "max": MAX_NUMBER_STEPS},
@@ -91,7 +92,6 @@ def read_args() -> argparse.Namespace:
         if not (chk["min"] <= chk["val"] <= chk["max"]):
             logger.debug("Unproper values")
             raise IntRangeError(chk["lbl"], chk["val"], chk["min"], chk["max"])
-    """
 
     if args.verbose == 1:
         logger.setLevel(logging.INFO)

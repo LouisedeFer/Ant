@@ -106,7 +106,7 @@ class LangtonAnt :
         """Coordonates of the board."""
         return (board.top_corner, board.bottom_corner)
 
-    def ant_play(self, ant : Ant, board : Board, step : int) -> None :
+    def ant_play(self, ant : Ant, board : Board, step : int, fps : int) -> None :  # noqa: C901, PLR0912
         """The ant with the pygame interface."""
         pygame.init()
         screen=pygame.display.set_mode(self._screen_size)
@@ -115,7 +115,7 @@ class LangtonAnt :
         clock = pygame.time.Clock()
         for _loop in range(step):
 
-            clock.tick(10)
+            clock.tick(fps)
             for event in pygame.event.get() :
                 # Closing window (Mouse click on cross icon or OS keyboard shortcut)
                 if event.type == pygame.QUIT:
@@ -142,8 +142,19 @@ class LangtonAnt :
                 if event.type == pygame.QUIT:
                     pygame.quit()
 
-                if event.type == pygame.KEYDOWN and event.key == pygame.K_q:
-                    pygame.quit()
+                if event.type == pygame.KEYDOWN :
+                    match event.key :
+                        case pygame.K_q:
+                            pygame.quit()
+                        case pygame.K_UP :
+                            board.move_up()
+                        case pygame.K_DOWN :
+                            board.move_down()
+                        case pygame.K_LEFT :
+                            board.move_left()
+                        case pygame.K_RIGHT :
+                            board.move_right()
+
 
             (min_r, min_c), (max_r, max_c)=self.coord_pygame(board)
             board.draw(screen, self._tile_size, min_r, max_r, min_c, max_c)

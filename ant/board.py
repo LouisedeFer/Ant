@@ -1,3 +1,4 @@
+from __future__ import annotations
 import logging  # noqa: D100
 
 import pygame
@@ -60,12 +61,12 @@ class Board :
         self._top_corner = corner
 
     @property
-    def bottom_corner(self) -> tuple[int, int] :
+    def bottom_corner(self) -> tuple[int, int ] :
         """Coordinates of the bottom corner."""
         return self._bottom_corner
 
     @bottom_corner.setter
-    def bottom_corner(self, corner : tuple[int, int]) -> None :
+    def bottom_corner(self, corner : tuple[int, int ]) -> None :
         self._bottom_corner = corner
 
     def __contains__(self, coord: tuple[int,int]) -> bool:
@@ -105,6 +106,43 @@ class Board :
             pygame.draw.line(screen, RED, (c*size,0), (c*size, (max_r-min_r+1)*size))
 
 
+
+    def move_up(self)->None :
+        """Move the window up."""
+        (x_top_left,_), (_,_)=self.global_coordinates
+        (x,y)=self.top_corner
+        (a,b)=self.bottom_corner
+        if x>x_top_left : #test is the user doesn't go too far
+            self.top_corner=(x-1,y)
+            self.bottom_corner=(a-1,b)
+
+    def move_down(self)->None :
+        """Move the window down."""
+        (_,_), (x_bottom_right,_)=self.global_coordinates
+        (x,y)=self.top_corner
+        (a,b)=self.bottom_corner
+        if a<x_bottom_right :
+            self.top_corner=(x+1,y)
+            self.bottom_corner=(a+1,b)
+
+
+    def move_left(self)->None :
+        """Move the window left."""
+        (_,y_top_left), (_,_)=self.global_coordinates
+        (x,y)=self.top_corner
+        (a,b)=self.bottom_corner
+        if y>y_top_left :
+            self.top_corner=(x,y-1)
+            self.bottom_corner=(a,b-1)
+
+    def move_right(self)->None :
+        """Move the window right."""
+        (_,_), (_,y_bottom_right)=self.global_coordinates
+        (x,y)=self.top_corner
+        (a,b)=self.bottom_corner
+        if b<y_bottom_right:
+            self.top_corner=(x,y+1)
+            self.bottom_corner=(a,b+1)
 
 
 
